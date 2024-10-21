@@ -8,11 +8,10 @@
 class QuakeDataset
 {
   public:
-    QuakeDataset(): {}
-    QuakeDataset(String filename): { loadData(filename)}
-    
-    virtual void loadData(String filename) const;
-    int size() const { return data.size(); }
+    QuakeDataset() = default;
+    QuakeDataset(const std::string& filename) { loadData(filename); } 
+    void loadData(const std::string& filename) const;
+    int size() const { return this->size(); }
     Quake operator [] (int) const;
     Quake strongest() const;
     Quake shallowest() const;
