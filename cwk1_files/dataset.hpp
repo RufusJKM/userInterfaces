@@ -8,6 +8,16 @@
 class QuakeDataset
 {
   public:
+    QuakeDataset(): {}
+    QuakeDataset(String filename): { loadData(filename)}
+    
+    virtual void loadData(String filename) const;
+    int size() const { return data.size(); }
+    Quake operator [] (int) const;
+    Quake strongest() const;
+    Quake shallowest() const;
+    Quake meanDepth() const;
+    Quake meanMagnitude() const;
     // Specify prototypes or inlined methods here
     // (see UML diagram for what is required)
 
