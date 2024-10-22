@@ -1,12 +1,12 @@
 // COMP2811 Coursework 1: QuakeDataset class
 #include <stdexcept>
-#include "csv.hpp>"
+#include "csv.hpp"
 #include "dataset.hpp"
 
 using namespace std;
 
-void QuakeDataset::loadData(const std::string& filename) const{
-    csv::CSVReader reader("test.csv");
+void QuakeDataset::loadData(const std::string& filename){
+    csv::CSVReader reader(filename);
     for (auto& row: reader) {
         string time = row["time"].get<>();
         double latitude = row["latitude"].get<double>();
@@ -26,45 +26,61 @@ Quake QuakeDataset::operator [] (int index) const{
 }
 
 Quake QuakeDataset::strongest() const{
-    double highest = 0;
-    int quakeNum = 0;
-    for (int i = 0; i < data.size(); i++){
-        if (data[i].getDepth() > highest){
-            highest = data[i].getDepth();
-            quakeNum = i;
+    if (data.size() == 0){
+        throw std::invalid_argument("There is no data");
+    } else {
+        double highest = 0;
+        int quakeNum = 0;
+        for (int i = 0; i < data.size(); i++){
+            if (data[i].getDepth() > highest){
+                highest = data[i].getDepth();
+                quakeNum = i;
+            }
         }
+        return data[quakeNum];
     }
-    return data[quakeNum];
 }
 
 Quake QuakeDataset::shallowest() const{
-    double lowest = data[0].getDepth();
-    int quakeNum = 0;
-    for (int i = 1; i < data.size(); i++){
-        if (data[i].getDepth() < lowest){
-            lowest = data[i].getDepth();
-            quakeNum = i;
+    if (data.size() == 0){
+        throw std::invalid_argument("There is no data");
+    } else {
+        double lowest = data[0].getDepth();
+        int quakeNum = 0;
+        for (int i = 1; i < data.size(); i++){
+            if (data[i].getDepth() < lowest){
+                lowest = data[i].getDepth();
+                quakeNum = i;
+            }
         }
+        return data[quakeNum];
     }
-    return data[quakeNum];
 }
 
 double QuakeDataset::meanDepth() const{
-    float size = data.size();
-    float total = 0;
-    for (int i = 0; i < size; i++){
-        total = total + data[i].getDepth();
-    }
+    if (data.size() == 0){
+        throw std::invalid_argument("There is no data");
+    } else {
+        float size = data.size();
+        float total = 0;
+        for (int i = 0; i < size; i++){
+            total = total + data[i].getDepth();
+        }
 
-    return total/size;
+        return total/size;
+    }
 }
 
 double QuakeDataset::meanMagnitude() const {
-    double size = data.size();
-    double total = 0;
-    for (int i = 0; i < size; i++){
-        total = total + data[i].getMagnitude();
-    }
+    if (data.size() == 0){
+        throw std::invalid_argument("There is no data");
+    } else {
+        double size = data.size();
+        double total = 0;
+        for (int i = 0; i < size; i++){
+            total = total + data[i].getMagnitude();
+        }
 
-    return total/size;
+        return total/size;
+    }
 }
